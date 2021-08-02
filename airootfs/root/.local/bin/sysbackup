@@ -1,0 +1,6 @@
+#!/bin/sh
+#the first one is the source and the second the destiny
+sudo rsync -aAXv --delete $2 --exclude=/dev/* --exclude=/proc/* --exclude=/sys/* --exclude=/tmp/* --exclude=/run/* --exclude=/mnt/* --exclude=/media/* --exclude="swapfile" --exclude="lost+found" --exclude=".cache" --exclude="Downloads"  / $1
+
+
+

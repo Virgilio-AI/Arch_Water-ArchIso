@@ -1,0 +1,20 @@
+# Maintainer: Virgilio Murillo <virgiliomurilloochoa1@gmail.com>
+pkgname=st-AW
+pkgver=0.8.4
+pkgrel=1
+pkgdesc="suckless simple terminal build for arch water linux"
+arch=('x86_64')
+url="https://github.com/Virgilio-AI/Arch_Water-st_terminal.git"
+license=('MIT')
+groups=('ArchWater')
+depends=('libxft' )
+makedepends=('git')
+provides=('st')
+replaces=('st')
+source=("git+$url#branch=archiso")
+md5sums=('SKIP')
+
+package() {
+	cd Arch_Water-st_terminal
+	make DESTDIR="$pkgdir/" install
+}

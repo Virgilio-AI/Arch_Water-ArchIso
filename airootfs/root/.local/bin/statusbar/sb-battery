@@ -1,0 +1,85 @@
+#!/bin/sh
+
+# Prints all batteries, their percentage remaining and an emoji corresponding
+# to charge status (🔌 for plugged up, 🔋 for discharging on battery, etc.).
+
+case $BUTTON in
+	3) notify-send "🔋 Battery module" "🔋: discharging
+🛑: not charging
+♻: stagnant charge
+🔌: charging
+⚡: charged
+❗: battery very low!
+- Scroll to change adjust xbacklight." ;;
+	4) xbacklight -inc 10 ;;
+	5) xbacklight -dec 10 ;;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+
+colRed="^c#FF0505^"
+colGreen="^c#05FF45^"
+colYellow="^c#CFD05B^"
+colBlue="^c#647FEA^"
+
+# for for each battery attached to the system
+for battery in /sys/class/power_supply/BAT?*; do
+	capacity=$(cat "$battery/capacity")
+	[ -n "${capacity+x}" ] && printf " "
+	case "$(cat "$battery/status")" in
+		"Full")
+			status = "" ;
+			bgcolor="$colGreen"
+			;;
+		"Discharging")
+			if [ "$capacity" -le 10 ]
+			then
+				bgcolor="$colRed"
+				status=""
+				aplay ~/Sounds/Tornado_Siren_II-Delilah-747233690.wav
+			elif [ "$capacity" -le 35 ]
+			then
+				bgcolor="$colYellow"
+				status=""
+			elif [ "$capacity" -le 60 ]
+			then
+				bgcolor="$colGreen"
+				status=""
+			elif [ "$capacity" -le 85 ]
+			then
+				bgcolor="$colGreen"
+				status=""
+			else
+				bgcolor="$colGreen"
+				status=""
+			fi
+			;;
+
+		"Charging")
+			if [ "$capacity" -le 10 ]
+			then
+				bgcolor="$colRed"
+				status=""
+			elif [ "$capacity" -le 35 ]
+			then
+				bgcolor="$colYellow"
+				status=""
+			elif [ "$capacity" -le 60 ]
+			then
+				bgcolor="$colGreen"
+				status=""
+			elif [ "$capacity" -le 85 ]
+			then
+				bgcolor="$colGreen"
+				status=""
+			else
+				bgcolor="$colGreen"
+				status=""
+			fi
+			;;
+
+		"Not charging") status="" ; bgcolor="$colBlue" ;;
+		"Unknown") status="" ; bgcolor="$colYellow" ;;
+	esac
+	printf "%s%s %d%%" "$bgcolor" "$status" "$capacity"; unset bgcolor ;
+done && exit 0

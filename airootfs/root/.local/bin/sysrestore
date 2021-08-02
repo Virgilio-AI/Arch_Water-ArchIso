@@ -1,0 +1,7 @@
+#!/bin/sh
+#the first one is the source and the second the destiny
+# make sure that they are properly mounted by mounting and chenking the content
+sudo rsync -aAXv --delete $3 --exclude="lost+found" $1 $2
+
+
+
