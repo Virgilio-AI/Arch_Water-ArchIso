@@ -2,7 +2,7 @@ shopt -s extglob
 ## clean folders and makepkg of github repos
 echo "do you want to update the data base?(y,n)"
 read temp
-if [ temp == "y" ] || [ temp == "" ];
+if [ $temp == "y" ] || [ $temp == "" ];
 then
 	
 	cd PKGBUILDS/dwm/ &&
