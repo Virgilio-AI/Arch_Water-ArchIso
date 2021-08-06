@@ -13,6 +13,9 @@ PKGBUILDS/dmenu/*
 PKGBUILDS/dwm/*
 !/PKGBUILDS/dwm/PKGBUILD
 
+PKGBUILDS/autoInstaller-AW
+!/PKGBUILDS/autoInstaller-AW/PKGBUILD
+
 PKGBUILDS/dwmblocks/*
 !/PKGBUILDS/dwmblocks/PKGBUILD
 
@@ -35,4 +38,5 @@ PKGBUILDS/brave-bin/*
 PKGBUILDS/libxft-bgra/*
 PKGBUILDS/paru/*
 PKGBUILDS/vim-plug/*
+
 
