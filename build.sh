@@ -84,8 +84,8 @@ then
 	cp -frv st/* CustomRepo/ &&
 	cp -frv vim-plug/* CustomRepo/ &&
 	cp -frv libxft-bgra/* CustomRepo/ &&
-	cp -frv autoInstaller/* CustomRepo/ &&
-	cd ../..
+	cp -frv autoInstaller-AW/* CustomRepo/ &&
+	cd ../../..
 fi
 
 sudo rm -rfdv out ; sudo rm -rfdv work &&
