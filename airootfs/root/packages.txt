@@ -29,7 +29,6 @@ cups-pk-helper
 darkhttpd
 ddrescue
 dhclient
-dhcpcd
 dialog
 dmraid
 dnsmasq

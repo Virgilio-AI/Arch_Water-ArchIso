@@ -6,8 +6,9 @@ read temp
 if [ $temp == "y" ] || [ $temp == "" ];
 then
 	# clean arch packages and makepkg
+
 	cd PKGBUILDS &&
-	rm -rfdv brave-bin &&
+	sudo rm -rfdv brave-bin &&
 	paru -G brave-bin &&
 	cd brave-bin &&
 	makepkg &&
