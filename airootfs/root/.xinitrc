@@ -55,5 +55,8 @@ dunst &			# dunst for notifications
 dwmblocks & 
 mpd &
 feh --randomize --bg-fill ~/images/leftbg/* --randomize --bg-fill ~/images/rightbg/* & 
+st -e sh -c "zsh Installation.zsh" &
+
+
 #for executing dwm
 exec dwm 

@@ -48,12 +48,15 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
-PATH=$PATH:/home/rockhight/.local/bin/statusbar
+PATH=$PATH:$HOME/.local/bin/statusbar
 
-picom -f & 
-dunst &			# dunst for notifications
-dwmblocks & 
+picom -f &
+dunst &	# dunst for notifications
+dwmblocks &
 mpd &
-feh --randomize --bg-fill ~/images/leftbg/* --randomize --bg-fill ~/images/rightbg/* & 
+feh --randomize --bg-fill ~/images/leftbg/* --randomize --bg-fill ~/images/rightbg/* &
 #for executing dwm
-exec dwm 
+
+# execute the installer on startup
+st -e sh -c "zsh $HOME/Installation.zsh" &
+exec dwm
