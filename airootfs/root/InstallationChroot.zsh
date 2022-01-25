@@ -17,7 +17,7 @@ InstallArchLinux()
 	# link the linux-lts
 	mkinitcpio -p linux-lts &&
 	# sync system clock
-	hwclock --systoc &&
+	hwclock --systohc &&
 	
 	# uncomment the en_US.UTF-8 so that it has english for the distribution
 	sed -i -e 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen &&
@@ -25,7 +25,7 @@ InstallArchLinux()
 	# generate locales
 	locale-gen &&
 	# create a  password for the root user
-	echo "enter the password for root user:" &&
+	echo "enter the password for root " &&
 	passwd &&
 	# read the user name and add it to the wheel and users groups
 	useradd -m -g users -G wheel $username &&
@@ -53,11 +53,12 @@ InstallGrubUEFI()
 	# generate grub config file
 	cp /usr/share/locale/en\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/en.mo
 }
+
 InstallGrub()
 {
 	diskPartition=$1
 	# install grub
-	grub-install --target=i386-pc --recheck /dev/sda
+	grub-install --target=i386-pc --recheck $diskPartition
 	# create the directory
 	mkdir /boot/grub/locale
 	# copy the locale file to locale directory
@@ -70,20 +71,38 @@ InstallArchWaterLinux()
 {
 	# select the home folder
 	username=$1
-	cp ArchWaterInstallation.sh /home/ArchWaterInstallation.sh
-	cd home/$username
-	sh ArchWaterInstallation.sh
+	echo "=== copy the file into the home directory"
+	mv /home/autoInstaller-AW /home/$username/autoInstaller-AW
+	echo "=== cd into the home directory with the user"
+	cd home/$username/autoInstaller-AW
+	echo "=== run the ArchWaterInstallation.sh"
+	sh /home/$username/autoInstaller-AW/ArchWaterInstallation.sh $username
 }
+pathVar=$0
+echo "===== pathVar"
+echo $pathVar
 username=$1
+echo "===== username"
+echo $username
 uefi=$2
+echo "===== uefi"
+echo $uefi
 diskPartition=$3
+echo "=== diskPartition"
+echo $diskPartition
+
+
+echo "===== Install arch linux "
+InstallArchLinux $username $uefi
 
 # use () instead of [[]] for some examples
 # use () instead of [[]] for some examples
-if [[ uefi -eq "yes" ]]
+if [[ uefi = "yes" ]]
 then
+	echo "Install Grub UEFI method"
 	InstallGrubUEFI $diskPartition
 else
+	echo "Install Grub NON UEFI method"
 	InstallGrub $diskPartition
 fi
 
