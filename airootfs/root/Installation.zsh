@@ -33,6 +33,7 @@ partitionUEFI(){
 	echo   # default number identifier
 	echo   # default first sector
 	echo +500M # so that it will be 500M
+	echo y # to remove the existing signature
 	echo t # change the type
 	echo 1 # the number identifier in the partition like 
 	echo n # create a swap partition

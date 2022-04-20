@@ -42,10 +42,6 @@ then
 	rm -vrfd !("PKGBUILD") &&
 	makepkg &&
 
-	cd ../cfiles &&
-	rm -vrfd !("PKGBUILD") &&
-	makepkg &&
-
 	cd ../dmenu &&
 	rm -vrfd !("PKGBUILD") &&
 	makepkg &&
@@ -64,7 +60,6 @@ then
 
 	# repo-add CustomRepo/CustomRepo.db.tar.gz brvae-bin/brave
 	find brave-bin -name brave-bin*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
-	find cfiles -name cfiles*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
 	find dmenu -name dmenu*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
 	find dwm -name dwm*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
 	find dwmblocks -name dwmblocks*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
@@ -77,7 +72,6 @@ then
 	
 	# paste the pkg inside of the repository
 	cp -frv brave-bin/* CustomRepo/ &&
-	cp -frv cfiles/* CustomRepo/ &&
 	cp -frv dmenu/* CustomRepo/ &&
 	cp -frv dwm/* CustomRepo/ &&
 	cp -frv dwmblocks/* CustomRepo/ &&
