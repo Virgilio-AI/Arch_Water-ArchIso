@@ -414,4 +414,4 @@ cfiles
 dmenu
 vim-plug
 paru
-autoInstaller-AW
+#autoInstaller-AW

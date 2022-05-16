@@ -54,13 +54,14 @@ then
 	rm -vrfd !("PKGBUILD") &&
 	makepkg &&
 
-	cd ../autoInstaller-AW &&
-	rm -vrfd !("PKGBUILD") &&
-	makepkg &&
+#	cd ../autoInstaller-AW &&
+#	rm -vrfd !("PKGBUILD") &&
+#	makepkg &&
 
 	# repo-add all the packages
 	cd .. &&
 	rm -rfd CustomRepo/* &&
+	mkdir CustomRepo
 
 	# repo-add CustomRepo/CustomRepo.db.tar.gz brvae-bin/brave
 	find brave-bin -name brave-bin*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
@@ -72,7 +73,7 @@ then
 	find st -name st*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
 	find vim-plug -name vim-plug*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
 	find libxft-bgra -name libxft-bgra*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
-	find autoInstaller-AW -name autoInstaller-AW*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
+#	find autoInstaller-AW -name autoInstaller-AW*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
 	
 	
 	# paste the pkg inside of the repository
@@ -85,7 +86,7 @@ then
 	cp -frv st/* CustomRepo/ &&
 	cp -frv vim-plug/* CustomRepo/ &&
 	cp -frv libxft-bgra/* CustomRepo/ &&
-	cp -frv autoInstaller-AW/* CustomRepo/ &&
+#	cp -frv autoInstaller-AW/* CustomRepo/ &&
 	cd ..
 fi
 
