@@ -3,90 +3,98 @@ shopt -s extglob
 echo "do you want to update the data base?(y,n)"
 read temp
 
+loadAUR()
+{
+	baseFolder=$(basename $(pwd) )
+	package=$1
+	if [ $baseFolder == "PKGBUILDS" ]
+	then
+		echo "correct"
+	else
+		cd ..
+	fi
+
+# 	echo "======= needed PKGBUILDS ========= "
+# 	echo $(pwd)
+# 	echo " ==== $package === "
+# 	read -n1
+
+ 	rm -rfdv $package &&
+	paru -G $package &&
+	cd $package &&
+	makepkg &&
+	# repo-add CustomRepo/CustomRepo.db.tar.gz $package/brave
+
+	# get into the PKGBUILDS folder
+	cd ..
+
+	find $package -name $package*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
+	# paste the pkg inside of the repository
+	cp -frv $package/* CustomRepo/
+}
+
+loadCustom()
+{
+	baseFolder=$(basename $(pwd))
+	package=$1
+
+	if [[ $baseFolder == "$package" ]]
+	then
+		echo "correct"
+	elif [[ $baseFolder == "PKGBUILDS" ]]
+	then
+		cd $package
+	else
+		cd ../$package
+	fi
+
+
+# 	echo "===== needed inside the $package === "
+# 	echo $(pwd)
+# 	echo " ==== $package === "
+# 	read -n1
+
+
+	rm -vrfd !("PKGBUILD") &&
+	makepkg &&
+
+	# get into the PKGBUILDS folder
+	cd ..
+	# repo-add CustomRepo/CustomRepo.db.tar.gz $package/brave
+	find $package -name $package*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
+	# paste the pkg inside of the repository
+	cp -frv $package/* CustomRepo/
+}
+
+
+
+
 if [ $temp == "y" ] || [ $temp == "" ];
 then
-	# clean arch packages and makepkg
 
+	# cd into the PKGBUILDS
 	cd PKGBUILDS &&
-	sudo rm -rfdv brave-bin &&
-	paru -G brave-bin &&
-	cd brave-bin &&
-	makepkg &&
 
-	cd .. &&
-	rm -rfdv libxft-bgra &&
-	paru -G libxft-bgra &&
-	cd libxft-bgra &&
-	makepkg &&
-
-
-	cd .. &&
-	rm -rfdv paru &&
-	paru -G paru &&
-	cd paru &&
-	makepkg &&
-
-
-	cd .. &&
-	rm -rfdv vim-plug &&
-	paru -G vim-plug &&
-	cd vim-plug &&
-	makepkg &&
-
-	# custom repos
-	cd ../dwm &&
-	rm -vrfd !("PKGBUILD") &&
-	makepkg &&
-
-	cd ../dwmblocks &&
-	rm -vrfd !("PKGBUILD") &&
-	makepkg &&
-
-	cd ../cfiles &&
-	rm -vrfd !("PKGBUILD") &&
-	makepkg &&
-
-	cd ../dmenu &&
-	rm -vrfd !("PKGBUILD") &&
-	makepkg &&
-
-	cd ../st &&
-	rm -vrfd !("PKGBUILD") &&
-	makepkg &&
-
-#	cd ../autoInstaller-AW &&
-#	rm -vrfd !("PKGBUILD") &&
-#	makepkg &&
-
-	# repo-add all the packages
-	cd .. &&
+	# remove the files inside the custom repo
 	rm -rfd CustomRepo/* &&
+	rm CustomRepo &&
 	mkdir CustomRepo
 
-	# repo-add CustomRepo/CustomRepo.db.tar.gz brvae-bin/brave
-	find brave-bin -name brave-bin*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
-	find cfiles -name cfiles*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
-	find dmenu -name dmenu*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
-	find dwm -name dwm*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
-	find dwmblocks -name dwmblocks*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
-	find paru -name paru*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
-	find st -name st*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
-	find vim-plug -name vim-plug*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
-	find libxft-bgra -name libxft-bgra*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
-#	find autoInstaller-AW -name autoInstaller-AW*.pkg.tar.zst -exec repo-add CustomRepo/CustomRepo.db.tar.gz {} \; &&
-	
-	
-	# paste the pkg inside of the repository
-	cp -frv brave-bin/* CustomRepo/ &&
-	cp -frv cfiles/* CustomRepo/ &&
-	cp -frv dmenu/* CustomRepo/ &&
-	cp -frv dwm/* CustomRepo/ &&
-	cp -frv dwmblocks/* CustomRepo/ &&
-	cp -frv paru/* CustomRepo/ &&
-	cp -frv st/* CustomRepo/ &&
-	cp -frv vim-plug/* CustomRepo/ &&
-	cp -frv libxft-bgra/* CustomRepo/ &&
-#	cp -frv autoInstaller-AW/* CustomRepo/ &&
+	# enable sudo
+	sudo echo "unlocker"
+
+	# make packages and add them to the database
+
+	# AUR packages
+	loadAUR brave-bin &&
+	loadAUR libxft-bgra &&
+	loadAUR paru &&
+
+	# personalized packages
+	loadCustom dwm
+	loadCustom dwmblocks
+	loadCustom dmenu
+	loadCustom st
 	cd ..
 fi
 
