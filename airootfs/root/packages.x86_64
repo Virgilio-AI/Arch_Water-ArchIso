@@ -179,8 +179,11 @@ neofetch
 networkmanager
 zsh-completions
 zsh-syntax-highlighting
-dunst
-mpd
-feh
-ttf
-git
+ttf-nerd-fonts-symbols
+libxft-bgra
+dwm
+st
+dwmblocks
+brave-bin
+dmenu
+paru

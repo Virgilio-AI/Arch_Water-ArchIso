@@ -39,44 +39,14 @@ autoload -Uz compinit
 compinit -d /$XDG_HOME_CONFIG/zsh/.zcompdump
 #path variables
 alias ls='ls -a --color=auto'
-alias rm='rm -rfd'
-alias cp='cp -r'
 alias umount='umount -v'
 alias mount='mount -v'
 alias grep='grep --color'
-alias lg="lazygit"
-alias gitsa='git submodule add'
 #alias pacman="sudo pacman"
 
 
-# alias for pacman -> greping errors and warnings
-alias pacman='sudo pacman'
 
-# alias for shutdown commiting all
 
-shutdown()
-{
-	if [ $# -eq 0 ]  ; then 
-		shutdown -c
-		sh gitAutoCommit.sh
-		command shutdown
-	else
-		command shutdown $@
-	fi
-}
-
-# commit all before reboot
-reboot()
-{
-	if [ $# -eq 0 ]  ; then 
-		sh gitAutoCommit.sh
-		command reboot
-	else
-		command reboot $@
-	fi
-}
-
-EDITOR="nvim"
 
 ####################################3 prompt 
 
@@ -91,26 +61,30 @@ parse_git_branch() {
       branch=${match[1]}
       branch_cut=${branch:0:35}
       if (( ${#branch} > ${#branch_cut} )); then
-          echo "(${branch_cut}…${state})"
+          echo "(${branch_cut})…${state}"
       else
-          echo "(${branch}${state})"
+          echo "(${branch})${state}"
       fi
     fi
 }
 
 setopt PROMPT_SUBST
-PROMPT='%{%F{79}%}%B%n%{%F{57}%}%~%{%F{11}%}$(parse_git_branch)%f%b '
-rm ~/.lesshst ;
-[[ -d ~/.pki ]] && rm ~/.pki ; 
-[[ -d ~/.cargo ]] && rm ~/.cargo ; 
-
-rm ~/.fehbg ;
-rm ~/.fzf.bash ; 
-rm ~/.fzf.zsh ;
-rm ~/.wget-hsts ;
+set -o GLOB_SUBST
 
 # neofetch --gtk-shorthand off --gtk2 off --gtk3 off --color_blocks off
- source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ## change sudo default editor
 SUDO_EDITOR=/usr/bin/nvim
+export EDITOR=nvim
+export VISUAL=nvim
 export SUDO_EDITOR
+export MANPAGER='nvim +Man!'
+
+
+precmd() { print "" }
+PROMPT='%S%F{green}%n%s%f%B%~%F{yellow} $(parse_git_branch)%f %F{red}$%f%b'
+
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+

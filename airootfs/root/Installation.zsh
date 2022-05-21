@@ -16,38 +16,7 @@ partitionUEFI(){
 	echo "===== the disk partition is $diskPartition" |& tee -a Log.txt
 	diskPartition=$1
 	(
-	echo d # delete all the partitions
-	echo   # default
-	echo   # default
-	echo d # delete all the partitions
-	echo   # default
-	echo   # default
-	echo d # delete all the partitions
-	echo   # default
-	echo   # default
-	echo d # delete all the partitions
-	echo   # default
-	echo   # default
-	echo g # create the gpt partition
-	echo n # create a new partition
-	echo   # default number identifier
-	echo   # default first sector
-	echo +500M # so that it will be 500M
-	echo t # change the type
-	echo 1 # the number identifier in the partition like 
-	echo n # create a swap partition
-	echo   # enter default number identifier
-	echo   # enter default starting section
-	echo +600M # give it 600M
-	echo y # to remove the existing signature
-	echo t # change the type
-	echo 2 # the identfier
-	echo 19 # for the linux swap
-	echo n # for a new partition
-	echo   # leave all the defaults in this one
-	echo   # leave all the defaults in this one
-	echo   # leave all the defaults in this one
-	echo w # writing the 
+
 	) | sudo fdisk $diskPartition  |& tee -a Log.txt
 
 	# format the EFI partition
