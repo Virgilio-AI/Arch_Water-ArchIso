@@ -187,3 +187,12 @@ dwmblocks
 brave-bin
 dmenu
 paru
+curl
+grub
+git
+dialog
+make
+nvidia
+mesa-libgl
+xf86-video-nouveau
+opencl-nvidia

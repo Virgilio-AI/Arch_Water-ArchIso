@@ -189,3 +189,11 @@ dmenu
 paru
 git
 ttf-font
+dialog
+curl
+grub
+make
+nvidia
+mesa-libgl
+xf86-video-nouveau
+opencl-nvidia

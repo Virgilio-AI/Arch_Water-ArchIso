@@ -182,5 +182,13 @@ zsh-syntax-highlighting
 dunst
 mpd
 feh
-ttf
+ttf-font
 git
+curl
+grub
+dialog
+nvidia
+mesa-libgl
+xf86-video-nouveau
+opencl-nvidia
+make

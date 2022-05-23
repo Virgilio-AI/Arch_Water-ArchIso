@@ -30,7 +30,7 @@ PKGBUILDS=$rootArchiso/PKGBUILDS
 
 
 personal_packages=("dwm" "dwmblocks" "dmenu" "st")
-AUR_packages=("brave-bin" "libxft-bgra" "paru" "vim-plug" "ttf-nerd-fonts-symbols")
+AUR_packages=("brave-bin" "libxft-bgra" "paru" "vim-plug" "ttf-nerd-fonts-symbols" "vim-plug")
 folders=("$PKGBUILDS/CustomRepo/*" "$rootArchiso/out/*" "$rootArchiso/work/*")
 
 

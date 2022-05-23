@@ -13,7 +13,6 @@ echo "$MY_PATH"
 archisoRoot=$MY_PATH
 
 
-echo $archisoRoot
 
 ## clean folders and makepkg of github repos
 echo "do you want to update the data base?(y,n)"
@@ -23,15 +22,15 @@ read update
 
 
 # enable sudo
-sudo echo "unlocker"
+sudo echo "enabled sudo privileges"
 
 
 
 loadAUR()
 {
 	package=$1
-
- 	rm -rfdv $archisoRoot/PKGBUILDS/$package
+	echo rm -rfdv $archisoRoot/PKGBUILDS/$package
+	rm -rfdv $archisoRoot/PKGBUILDS/$package
 	cd $archisoRoot/PKGBUILDS
 	paru -G $package
 	cd $package
@@ -51,6 +50,7 @@ loadCustom()
 {
 	package=$1
 	cd $archisoRoot/PKGBUILDS/$package
+	echo $(pwd)
 	rm -vrfd !("PKGBUILD")
 	makepkg
 
@@ -72,6 +72,18 @@ repo_add()
 	cp -frv $archisoRoot/PKGBUILDS/$package/* $archisoRoot/airootfs/root/custom/
 }
 
+gitClone()
+{
+	local -n lrepos=$1
+	echo $lrepos
+	mkdir $archisoRoot/airootfs/root/autoInstaller-AW/repos
+	cd $archisoRoot/airootfs/root/autoInstaller-AW/repos
+	for (( i=0; i<= ${#repos[@]} ; i+=1 ))
+	do
+		git clone ${repos[i]}
+	done
+}
+
 
 
 
@@ -83,6 +95,9 @@ then
 # 
 # 
 # #	# remove the files inside the custom repo
+	echo rm -rfdv $archisoRoot/PKGBUILDS/CustomRepo/*
+	echo rm -rfdv $archisoRoot/PKGBUILDS/CustomRepo
+
 	rm -rfdv $archisoRoot/PKGBUILDS/CustomRepo/*
 	rm -rfdv $archisoRoot/PKGBUILDS/CustomRepo
 	mkdir $archisoRoot/PKGBUILDS/CustomRepo
@@ -97,13 +112,14 @@ then
 	loadAUR libxft-bgra &&
 	loadAUR paru &&
 	loadAUR ttf-nerd-fonts-symbols &
+	loadAUR vim-plug &
 
 
 	# personalized packages
-	loadCustom dwm
-	loadCustom dwmblocks
-	loadCustom dmenu
-	loadCustom st
+	echo "y" | loadCustom dwm
+	echo "y" | loadCustom dwmblocks
+	echo "y" | loadCustom dmenu
+	echo "y" | loadCustom st
 	cd $archisoRoot/PKGBUILDS
 fi
 
@@ -118,8 +134,6 @@ then
 	# para llenarlo con paquetes nuevos
 	echo "about to delete"
 	mkdir $archisoRoot/airootfs/root/custom
-	echo $archisoRoot/airootfs/root/custom/*
-	read -n1
 	rm -rfdv $archisoRoot/airootfs/root/custom/*
 
 
@@ -127,39 +141,20 @@ then
 	# con todos los paquetes compilados
 	cp -rvf $archisoRoot/PKGBUILDS/CustomRepo/* $archisoRoot/airootfs/root/custom/
 
-# 	# borramos la base de datos
-# 	echo "about to delete /root/custom/Custom*"
-# 	read -n1
-# 	rm -rfdv /root/custom/Custom*
-# 
-# 	echo "pause to see deleted files"
-# 	read -n1
 
-	
 	# agregamos los paquetes de la lista de pacman
 	mkdir -p $archisoRoot/airootfs/root/blankdb
 	sudo pacman -Sywv --cachedir $archisoRoot/airootfs/root/custom --dbpath $archisoRoot/airootfs/root/blankdb $(cat $archisoRoot/packages.txt)
 
-	# mkdir $archisoRoot/etc/blankdb
-	# sudo pacman -Sywv --cachedir /root/custom --dbpath  $archisoRoot/etc/blankdb   $(cat $archisoRoot/packages.txt)
-
-	echo "pause to check pacman installed packages"
-	read -n1
 	repo-add $archisoRoot/airootfs/root/custom/CustomRepo.db.tar.gz $archisoRoot/airootfs/root/custom/*.zst
 	repo-add $archisoRoot/airootfs/root/custom/CustomRepo.db.tar.gz $archisoRoot/airootfs/root/custom/*.xz
-
-	echo "pause for analysing repo add"
-	read -n1
-
-
-
-
-
 
 
 	repo_add brave-bin
 	repo_add libxft-bgra
 	repo_add paru
+	repo_add ttf-nerd-fonts-symbols
+	repo_add vim-plug
 
 	# personalized packages
 	repo_add dwm
@@ -168,13 +163,27 @@ then
 	repo_add st
 
 
+	repos=("https://github.com/Virgilio-AI/Arch_Water-dmenu.git" "https://github.com/Virgilio-AI/Arch_water-dwm-window_manager.git" "https://github.com/Virgilio-AI/Arch_Water-dwmblocks-status_monitor.git" "https://github.com/Virgilio-AI/Arch_Water-st_terminal.git")
 
+	gitClone repos
+
+	toDelete=$archisoRoot/airootfs/root/dotFiles
+	echo "about to delete $toDelete"
+	rm -rfd $toDelete
+	cd $archisoRoot/airootfs/root/autoInstaller-AW
+	git clone https://github.com/Virgilio-AI/dotFiles-AW.git dotFiles
 fi
 
 cd $archisoRoot
+
+echo sudo rm -rfdv $archisoRoot/out
+echo sudo rm -rfdv $archisoRoot/work
+
 sudo rm -rfdv $archisoRoot/out ; sudo rm -rfdv $archisoRoot/work
 
 customRepo=$archisoRoot/PKGBUILDS/CustomRepo
 
 sed "s|\(Server = file://\).\+|\1$(pwd)/PKGBUILDS/CustomRepo|g" -i $(pwd)/pacman.conf
+
+
 sudo mkarchiso -v .

@@ -270,3 +270,16 @@ zathura-ps
 zsh
 zsh-completions
 zsh-syntax-highlighting
+dunst
+mpd
+feh
+ttf-font
+git
+curl
+dialog
+grub
+make
+nvidia
+mesa-libgl
+xf86-video-nouveau
+opencl-nvidia
