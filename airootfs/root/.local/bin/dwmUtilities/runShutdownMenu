@@ -1,0 +1,2 @@
+#!/bin/zsh
+st -T "floating" -e sh -c "shutdown_menu ; read -n1 "

@@ -1,7 +1,6 @@
 #!/bin/sh
-# script to install ArchWater Linux on a newly arch linux
-# for of luke smith larbs
-# by virgilio Murillo Ochoa <virgiliomurilloochoa1@gmail.com>
+# taken this code from luke smith
+# by Virgilio Murillo <virgiliomurilloochoa1@gmail.com>
 # License: GNU GPLv3
 
 ### OPTIONS AND VARIABLES ###
@@ -15,7 +14,7 @@ while getopts ":a:r:b:p:h" o; do case "${o}" in
 	*) printf "Invalid option: -%s\\n" "$OPTARG" && exit 1 ;;
 esac done
 
-[ -z "$dotfilesrepo" ] && dotfilesrepo="https://github.com/Virgilio-AI/dotFiles-AW.git"
+[ -z "$dotfilesrepo" ] && dotfilesrepo="https://github.com/Virgilio-AI/ArchWater-Dotfiles.git"
 [ -z "$progsfile" ] && progsfile="https://raw.githubusercontent.com/Virgilio-AI/ArchWater-AutoInstaller/master/progs.csv"
 [ -z "$aurhelper" ] && aurhelper="paru"
 [ -z "$repobranch" ] && repobranch="master"
@@ -27,28 +26,28 @@ installpkg(){ pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
 error() { echo "ERROR: $1" ; exit 1;}
 
 welcomemsg() { \
-	dialog --title "Welcome!" --msgbox "Welcome to Arch Water Linux installer Script!\\n\\nThis script will automatically install arch Water Linux.\\n\\n-vir" 10 60
+	dialog --title "Welcome!" --msgbox "ArchWater linux auto installer script\\n\\nThis script will automatically install a fully-featured Linux ArchWater distro on top of arch linux\\n\\n-vir" 10 60
 
 	dialog --colors --title "Important Note!" --yes-label "All ready!" --no-label "Return..." --yesno "Be sure the computer you are using has current pacman updates and refreshed Arch keyrings.\\n\\nIf it does not, the installation of some programs might fail." 8 70
 	}
 
-# getuserandpass() { \
-# 	# Prompts user for new username an password.
-# 	name=$(dialog --inputbox "First, please enter a name for the user account." 10 60 3>&1 1>&2 2>&3 3>&1) || exit 1
-# 	while ! echo "$name" | grep -q "^[a-z_][a-z0-9_-]*$"; do
-# 		name=$(dialog --no-cancel --inputbox "Username not valid. Give a username beginning with a letter, with only lowercase letters, - or _." 10 60 3>&1 1>&2 2>&3 3>&1)
-# 	done
-# 	pass1=$(dialog --no-cancel --passwordbox "Enter a password for that user." 10 60 3>&1 1>&2 2>&3 3>&1)
-# 	pass2=$(dialog --no-cancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
-# 	while ! [ "$pass1" = "$pass2" ]; do
-# 		unset pass2
-# 		pass1=$(dialog --no-cancel --passwordbox "Passwords do not match.\\n\\nEnter password again." 10 60 3>&1 1>&2 2>&3 3>&1)
-# 		pass2=$(dialog --no-cancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
-# 	done ;}
+getuserandpass() { \
+	# Prompts user for new username an password.
+	name=$(dialog --inputbox "First, please enter a name for the user account." 10 60 3>&1 1>&2 2>&3 3>&1) || exit 1
+	while ! echo "$name" | grep -q "^[a-z_][a-z0-9_-]*$"; do
+		name=$(dialog --no-cancel --inputbox "Username not valid. Give a username beginning with a letter, with only lowercase letters, - or _." 10 60 3>&1 1>&2 2>&3 3>&1)
+	done
+	pass1=$(dialog --no-cancel --passwordbox "Enter a password for that user." 10 60 3>&1 1>&2 2>&3 3>&1)
+	pass2=$(dialog --no-cancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
+	while ! [ "$pass1" = "$pass2" ]; do
+		unset pass2
+		pass1=$(dialog --no-cancel --passwordbox "Passwords do not match.\\n\\nEnter password again." 10 60 3>&1 1>&2 2>&3 3>&1)
+		pass2=$(dialog --no-cancel --passwordbox "Retype password." 10 60 3>&1 1>&2 2>&3 3>&1)
+	done ;}
 
 usercheck() { \
 	! { id -u "$name" >/dev/null 2>&1; } ||
-	dialog --colors --title "WARNING!" --yes-label "CONTINUE" --no-label "No wait..." --yesno "The user \`$name\` already exists on this system. ArchWater-AutoInstaller can install for a user already existing, but it will \\Zboverwrite\\Zn any conflicting settings/dotfiles on the user account.\\n\\nArchWater-AutoInstaller will \\Zbnot\\Zn overwrite your user files, documents, videos, etc., so don't worry about that, but only click <CONTINUE> if you don't mind your settings being overwritten.\\n\\nNote also that ArchWater-AutoInstaller will change $name's password to the one you just gave." 14 70
+	dialog --colors --title "WARNING!" --yes-label "CONTINUE" --no-label "No wait..." --yesno "The user \`$name\` already exists on this system. this script can install for a user already existing, but it will \\Zboverwrite\\Zn any conflicting settings/dotfiles on the user account.\\n\\nthis script will \\Zbnot\\Zn overwrite your user files, documents, videos, etc., so don't worry about that, but only click <CONTINUE> if you don't mind your settings being overwritten.\\n\\nNote also that this script will change $name's password to the one you just gave." 14 70
 	}
 
 preinstallmsg() { \
@@ -71,9 +70,19 @@ refreshkeys() { \
 	}
 
 newperms() { # Set special sudoers settings for install (or after).
-	sed -i "/#LARBS/d" /etc/sudoers
-	echo "$* #LARBS" >> /etc/sudoers ;}
+	sed -i "/#ArchWater-AutoInstaller/d" /etc/sudoers
+	echo "$* #ArchWater-AutoInstaller" >> /etc/sudoers ;}
 
+manualinstall() { # Installs $1 manually if not installed. Used only for AUR helper here.
+	[ -f "/usr/bin/$1" ] || (
+	dialog --infobox "Installing \"$1\", an AUR helper..." 4 50
+	cd /tmp || exit 1
+	rm -rf /tmp/"$1"*
+	curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz &&
+	sudo -u "$name" tar -xvf "$1".tar.gz >/dev/null 2>&1 &&
+	cd "$1" &&
+	sudo -u "$name" makepkg --noconfirm -si >/dev/null 2>&1 || return 1
+	cd /tmp || return 1) ;}
 
 maininstall() { # Installs all needed programs from main repo.
 	dialog --title "ArchWater Installation" --infobox "Installing \`$1\` ($n of $total). $1 $2" 5 70
@@ -103,7 +112,8 @@ pipinstall() { \
 	}
 
 installationloop() { \
-	total=$(wc -l < progs.csv)
+	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' > /tmp/progs.csv
+	total=$(wc -l < /tmp/progs.csv)
 	aurinstalled=$(pacman -Qqm)
 	while IFS=, read -r tag program comment; do
 		n=$((n+1))
@@ -114,13 +124,16 @@ installationloop() { \
 			"P") pipinstall "$program" "$comment" ;;
 			*) maininstall "$program" "$comment" ;;
 		esac
-	done < progs.csv ;}
+	done < /tmp/progs.csv ;}
 
 putgitrepo() { # Downloads a gitrepo $1 and places the files in $2 only overwriting conflicts
-	local user=$1
-	repoPath=/tmp/dotFiles/*
-	userHome=/home/$user/
-	sudo cp -rfT "$dir" "$userHome"
+	dialog --infobox "Downloading and installing config files..." 4 60
+	[ -z "$3" ] && branch="master" || branch="$repobranch"
+	dir=$(mktemp -d)
+	[ ! -d "$2" ] && mkdir -p "$2"
+	chown "$name":wheel "$dir" "$2"
+	sudo -u "$name" git clone --recursive -b "$branch" --depth 1 --recurse-submodules "$1" "$dir" >/dev/null 2>&1
+	sudo -u "$name" cp -rfT "$dir" "$2"
 	}
 
 systembeepoff() { dialog --infobox "Getting rid of that retarded error beep sound..." 10 50
@@ -129,55 +142,42 @@ systembeepoff() { dialog --infobox "Getting rid of that retarded error beep soun
 
 finalize(){ \
 	dialog --infobox "Preparing welcome message..." 4 50
-	dialog --title "All done!" --msgbox "Congrats! Provided there were no hidden errors, the script completed successfully and all the programs and configuration files should be in place.\\n\\nTo run the new graphical environment, log out and log back in as your new user, then run the command \"startx\" to start the graphical environment (it will start automatically in tty1).\\n\\n.t Luke" 12 80
+	dialog --title "All done!" --msgbox "Congrats! Provided there were no hidden errors, the script completed successfully and all the programs and configuration files should be in place.\\n\\nTo run the new graphical environment, log out and log back in as your new user, then run the command \"startx\" to start the graphical environment (it will start automatically in tty1).\\n\\n.t vir" 12 80
 	}
-
-changeFoldersPermissions()
-{
-	sudo chmod u=rwx,g=rx,o=rx /home/$name |& tee -a Log.txt
-	sudo chown rockhight -R /home/$name |& tee -a Log.txt
-	sudo chmod -R u=rwx,g=rx,o=rx /home/$name/.local/bin
-	sudo chgrp wheel /home/$name
-}
-
-
-
-
-
-
-
-
 
 ### THE ACTUAL SCRIPT ###
 
 ### This is how everything happens in an intuitive format and order.
 
-username=$1
-password=$2
-rootPassword=$3
-uefi=$4
-diskPartition=$5
+# Check if user is root on Arch distro. Install dialog.
+pacman --noconfirm --needed -Sy dialog || error "Are you sure you're running this as the root user, are on an Arch-based distribution and have an internet connection?"
 
 # Welcome user and pick dotfiles.
 welcomemsg || error "User exited."
 
+# Get and verify username and password.
+getuserandpass || error "User exited."
+
+# Give warning if user already exists.
+usercheck || error "User exited."
 
 # Last chance for user to back out before install.
-preinstallmsg $username || error "User exited."
-
-
-
+preinstallmsg || error "User exited."
 
 ### The rest of the script requires no user input.
 
 # Refresh Arch keyrings.
-# refreshkeys || error "Error automatically refreshing Arch keyring. Consider doing so manually."
+refreshkeys || error "Error automatically refreshing Arch keyring. Consider doing so manually."
 
-
+for x in curl base-devel git ntp zsh; do
+	dialog --title "ArchWater Installation" --infobox "Installing \`$x\` which is required to install and configure other programs." 5 70
+	installpkg "$x"
+done
 
 dialog --title "ArchWater Installation" --infobox "Synchronizing system time to ensure successful and secure installation of software..." 4 70
 ntpdate 0.us.pool.ntp.org >/dev/null 2>&1
 
+adduserandpass || error "Error adding username and/or password."
 
 [ -f /etc/sudoers.pacnew ] && cp /etc/sudoers.pacnew /etc/sudoers # Just in case
 
@@ -192,27 +192,35 @@ grep -q "ILoveCandy" /etc/pacman.conf || sed -i "/#VerbosePkgLists/a ILoveCandy"
 # Use all cores for compilation.
 sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
 
-# installationloop
-installGithubRepos
+manualinstall $aurhelper || error "Failed to install AUR helper."
 
+# The command that does all the installing. Reads the progs.csv file and
+# installs each needed program the way required. Be sure to run this only after
+# the user has been created and has priviledges to run sudo without a password
+# and all build dependencies are installed.
+installationloop
 
+dialog --title "ArchWater Installation" --infobox "Finally, installing \`libxft-bgra\` to enable color emoji in suckless software without crashes." 5 70
+yes | sudo -u "$name" $aurhelper -S libxft-bgra-git >/dev/null 2>&1
 
 # Install the dotfiles in the user's home directory
-putgitrepo $username
+putgitrepo "$dotfilesrepo" "/home/$name" "$repobranch"
 rm -f "/home/$name/README.md" "/home/$name/LICENSE" "/home/$name/FUNDING.yml"
 # make git ignore deleted LICENSE & README.md files
-git update-index --assume-unchanged "/home/$name/README.md" "/home/$name/LICENSE" "/home/$name/FUNDING.yml"
+git update-index --assume-unchanged "/home/$name/README.md" "/home/$name/LICENSE"
 
+# Most important command! Get rid of the beep!
+systembeepoff
 
 # Make zsh the default shell for the user.
 chsh -s /bin/zsh "$name" >/dev/null 2>&1
 sudo -u "$name" mkdir -p "/home/$name/.cache/zsh/"
 
-# # dbus UUID must be generated for Artix runit.
-# dbus-uuidgen > /var/lib/dbus/machine-id
-# 
-# # Use system notifications for Brave on Artix
-# echo "export \$(dbus-launch)" > /etc/profile.d/dbus.sh
+# dbus UUID must be generated for Artix runit.
+dbus-uuidgen > /var/lib/dbus/machine-id
+
+# Use system notifications for Brave on Artix
+echo "export \$(dbus-launch)" > /etc/profile.d/dbus.sh
 
 # Tap to click
 [ ! -f /etc/X11/xorg.conf.d/40-libinput.conf ] && printf 'Section "InputClass"
@@ -233,29 +241,8 @@ killall pulseaudio; sudo -u "$name" pulseaudio --start
 
 # This line, overwriting the `newperms` command above will allow the user to run
 # serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
-
-
-# copy the profile configuration
-sudo cp profile /etc/profile
-
-# copy the zsh configuration
-sudo rsync -aAXv --delete zdotdir/ ~/.config/zsh/
-sudo rsync -aAXv --delete etcZdotdir/ /etc/zsh/
-
-
-
-
-(
-echo "$password"
-) | sudo chgrp users -R /home/$name |& tee -a Log.txt
-
-changeFoldersPermissions
-
-
-
-
-rm -f "/home/$name/README.md" "/home/$name/LICENSE" "/home/$name/FUNDING.yml"
-rm -rfd "/home/$name/.git"
+newperms "%wheel ALL=(ALL) ALL #ArchWater-AutoInstaller
+%wheel ALL=(ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/systemctl suspend,/usr/bin/wifi-menu,/usr/bin/mount,/usr/bin/umount,/usr/bin/pacman -Syu,/usr/bin/pacman -Syyu,/usr/bin/packer -Syu,/usr/bin/packer -Syyu,/usr/bin/systemctl restart NetworkManager,/usr/bin/rc-service NetworkManager restart,/usr/bin/pacman -Syyu --noconfirm,/usr/bin/loadkeys,/usr/bin/paru,/usr/bin/pacman -Syyuw --noconfirm"
 
 # Last message! Install complete!
 finalize

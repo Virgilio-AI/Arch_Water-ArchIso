@@ -35,13 +35,12 @@ partitionUEFI(){
 	echo   # default
 	echo g # create a dos partition
 	echo n # create the efi partition
-	echo p # make it primary
-	echo   # use the default partition
+	echo   # use the default partition number
 	echo   # use the default first sector
 	echo +500M # give it the 4 gigas
 	echo y # delete the default format
 	echo t # change the partition type
-	echo 1 # use the 82 partition
+	echo 1 # for using the efi system partition
 	echo n # create the main partition
 	echo p # make it primary
 	echo   # the default
@@ -67,7 +66,7 @@ partitionUEFI(){
 	mount ${diskPartition}2 /mnt  |& tee -a Log.txt 
 
 	# mount the efi partition
-	mkdir /mnt/boot/efi
+	mkdir -p /mnt/boot/efi
 	mount ${diskPartition}1 /mnt/boot/efi
 }
 partition()

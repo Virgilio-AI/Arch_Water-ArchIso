@@ -2,7 +2,6 @@
 pkgname=dwm-AW
 pkgver=6.2
 pkgrel=1
-epoch=
 pkgdesc="dwm build for arch water linux"
 arch=( 'x86_64' )
 url="https://github.com/Virgilio-AI/Arch_water-dwm-window_manager.git"

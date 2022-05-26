@@ -34,7 +34,7 @@ loadAUR()
 	cd $archisoRoot/PKGBUILDS
 	paru -G $package
 	cd $package
-	makepkg
+	makepkg -s
 	# repo-add CustomRepo/CustomRepo.db.tar.gz $package/brave
 
 	# get into the PKGBUILDS folder
@@ -165,7 +165,7 @@ then
 
 	repos=("https://github.com/Virgilio-AI/Arch_Water-dmenu.git" "https://github.com/Virgilio-AI/Arch_water-dwm-window_manager.git" "https://github.com/Virgilio-AI/Arch_Water-dwmblocks-status_monitor.git" "https://github.com/Virgilio-AI/Arch_Water-st_terminal.git")
 
-	gitClone repos
+	# gitClone repos
 
 	toDelete=$archisoRoot/airootfs/root/dotFiles
 	echo "about to delete $toDelete"

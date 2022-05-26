@@ -1,4 +1,0 @@
-#!/bin/bash
-st -e sh -c "pass show amazon/mx/virgiliomurilloochoa1@gmail.com" ;
-passmenu --type
-
