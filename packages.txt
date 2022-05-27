@@ -211,3 +211,5 @@ qutebrowser
 vim
 python-adblock
 ncmpcpp
+pulseaudio
+pavucontrol

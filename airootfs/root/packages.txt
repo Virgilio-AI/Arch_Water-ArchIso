@@ -301,3 +301,5 @@ vim
 python-adblock
 qutebrowser
 ncmpcpp
+pulseaudio
+pavucontrol
