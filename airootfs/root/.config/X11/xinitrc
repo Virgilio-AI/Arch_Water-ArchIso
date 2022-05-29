@@ -50,11 +50,11 @@ fi
 
 PATH=$PATH:$HOME/.local/bin/statusbar
 
-picom -f &
+picom &
 dunst &	# dunst for notifications
+feh --randomize --bg-fill ~/images/background/* --randomize --bg-fill ~/images/background/* &
 dwmblocks &
 mpd &
-feh --randomize --bg-fill ~/images/leftbg/* --randomize --bg-fill ~/images/rightbg/* &
 #for executing dwm
 
 # execute the installer on startup

@@ -303,3 +303,4 @@ qutebrowser
 ncmpcpp
 pulseaudio
 pavucontrol
+feh
