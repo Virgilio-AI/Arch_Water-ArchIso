@@ -10,12 +10,12 @@
 # functions
 partitionUEFI(){
 	# dialog --title "Installation -- creating the partitions" --infobox "the disk will be partitioned and formated" 10 60
-	echo " ===== the disk will be partitioned and formatted ====== " |& tee -a Log.txt
-	echo " ===== you choosed the EUFI installer ====== " |& tee -a Log.txt
-	echo "===== the disk partition is $diskPartition" |& tee -a Log.txt
+	echo " ===== the disk will be partitioned and formatted ====== "
+	echo " ===== you choosed the EUFI installer ====== "
+	echo "===== the disk partition is $diskPartition"
 	diskPartition=$1
-	(
-	echo "===== the disk partition is $diskPartition" |& tee -a Log.txt
+	echo "===== the disk partition is $diskPartition"
+
 	(
 	echo d # delete all the partitions
 	echo   # default
@@ -48,22 +48,21 @@ partitionUEFI(){
 	echo   # give it the whole size
 	echo y # delete the default format
 	echo w # save and quit
-	) | sudo fdisk $diskPartition |& tee -a Log.txt
-	) | sudo fdisk $diskPartition  |& tee -a Log.txt
+	) | sudo fdisk $diskPartition
 
 	# format the EFI partition
 	# dialog --title "Installation -- creating the partitions UEFI" --infobox "formating the EFI partition" 10 60
-	echo "==========formatting the partitions UEFI" |& tee -a Log.txt
-	mkfs.fat -F32 ${diskPartition}1  |& tee -a Log.txt
+	echo "==========formatting the partitions UEFI"
+	mkfs.fat -F32 ${diskPartition}1
 	# mkswap in the swap partition
 	# dialog --title "Installation -- creating the partitions UEFI" --infobox "making the swap partition" 10 60
-	echo "==========making the swap partition" |& tee -a Log.txt
-	mkfs.ext4 ${diskPartition}2  |& tee -a Log.txt 
+	echo "==========making the swap partition"
+	mkfs.ext4 ${diskPartition}2
 
 	# first mount the root partition
 	# dialog --title "Installation -- creating the partitions UEFI" --infobox "mounting the main partition" 10 60
-	echo "==========mounting the main partition"  |& tee -a Log.txt
-	mount ${diskPartition}2 /mnt  |& tee -a Log.txt 
+	echo "==========mounting the main partition"
+	mount ${diskPartition}2 /mnt
 
 	# mount the efi partition
 	mkdir -p /mnt/boot/efi
@@ -72,10 +71,10 @@ partitionUEFI(){
 partition()
 {
 	# dialog --title "Installation -- creating the partitions" --infobox "the disk will be partitioned and formated" 10 60
-	echo "===== the disk will be partitioned and formatted" |& tee -a Log.txt
-	echo "===== non UEFI method" |& tee -a Log.txt
+	echo "===== the disk will be partitioned and formatted" 
+	echo "===== non UEFI method" 
 	diskPartition=$1
-	echo "===== the disk partition is $diskPartition" |& tee -a Log.txt
+	echo "===== the disk partition is $diskPartition" 
 	(
 	echo d # delete all the partitions
 	echo   # default
@@ -109,21 +108,21 @@ partition()
 	echo   # give it the whole size
 	echo y # delete the default format
 	echo w # save and quit
-	) | sudo fdisk $diskPartition |& tee -a Log.txt
+	) | sudo fdisk $diskPartition 
 
 	# format the root partition
-	echo "===== formatting the disk"  |& tee -a Log.txt
-	echo "y" | mkfs.ext4 ${diskPartition}2  |& tee -a Log.txt
+	echo "===== formatting the disk"  
+	echo "y" | mkfs.ext4 ${diskPartition}2  
 
 	# format the boot partition
 	echo "y" | mkfs.ext4 ${diskPartition}1
 
-	echo "===== mounting the main partition"  |& tee -a Log.txt
-	mount ${diskPartition}2 /mnt  |& tee -a Log.txt
+	echo "===== mounting the main partition"  
+	mount ${diskPartition}2 /mnt  
 
 	mkdir /mnt/boot
 	echo " ===== mounting the boot partition"
-	mount ${diskPartition}1 /mnt/boot |& tee -a Log.txt
+	mount ${diskPartition}1 /mnt/boot 
 }
 
 
@@ -132,20 +131,20 @@ InternetConnection()
 # first configure the network connection
 # start the network manager daemon
 # dialog --title "Arch Water Installation" --infobox "starting the network manager" 10 60
-systemctl start NetworkManager |& tee -a Log.txt 
+systemctl start NetworkManager
 # use the wifi
 nmtui ;
 
 # sync the time and date
 # dialog --title "ArchWater Installation" --infobox "syncronizing time and date" 10 60
-timedatectl set-ntp true  |& tee -a Log.txt 
+timedatectl set-ntp true
 
 # try remove the sync files for ensuring the installation is correct
 # dialog --title "ArchWater Installation" --infobox "removal of the currently installed packages" 10 60
-rm -R /var/lib/pacman/sync/ |& tee -a Log.txt 
+rm -R /var/lib/pacman/sync/
 # try installing the packages again
 # dialog --title "ArchWater Installation" --infobox "sync the packages in pacman" 10 60
-pacman -Sy |& tee -a Log.txt 
+pacman -Sy
 
 # update the arch linux keyring( the installation medium might be very old)
 # dialog --title "ArchWater Installation" --infobox "downloading the new archlinux-keyrins to ensure installing packages" 10 60
@@ -164,7 +163,7 @@ dialog --title "Installation ArchWater" --msgbox "this is the script to automate
 
 
 reset ;
-InternetConnection
+InternetConnection |& tee -a Log.txt
 
 seePartitions=$(lsblk)
 diskPartition=$(dialog --title "partitioning the disks" --inputbox "$seePartitions\nenter the partition in with you want to install the partition" 30 80 "/dev/sda" 3>&1 1>&2 2>&3)
@@ -175,11 +174,11 @@ if [[ $? == 0 ]]
 then
 	uefi="yes"
 	reset ;
-	partitionUEFI $diskPartition
+	partitionUEFI $diskPartition |& tee -a Log.txt
 else
 	uefi="no"
 	reset ;
-	partition $diskPartition
+	partition $diskPartition |& tee -a Log.txt 
 fi
 
 while [ $rootPassword != $rootConfirm ]
