@@ -230,7 +230,7 @@ InstallationPlace=/mnt/
 # copy the installation script into the home
 # dialog --title "Installation" --infobox "copying the files that we will need in the chroot environment" 10 60
 echo "===== copying the files that will need in our installation" |& tee -a Log.txt
-cp -r autoInstaller-AW $InstallationPlace |& tee -a Log.txt
+cp -r autoInstaller-ArchWater/ $InstallationPlace |& tee -a Log.txt
 cp InstallationChroot.zsh $InstallationPlace |& tee -a Log.txt
 cp -r dotFiles $InstallationPlace |& tee -a Log.txt
 # run the script 

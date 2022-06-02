@@ -219,3 +219,5 @@ mpd
 pulseaudio
 pavucontrol
 feh
+ntp
+pamixer

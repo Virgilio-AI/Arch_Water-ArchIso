@@ -16,6 +16,8 @@ InstallArchLinux()
 	systemctl enable sshd &&
 	# enable the network manager
 	systemctl enable NetworkManager &&
+	# enable ntp for automatic sync of clock
+	systemctl enable ntp &&
 	# link the linux-lts
 	mkinitcpio -p linux &&
 	# sync system clock
@@ -85,11 +87,11 @@ InstallArchWaterLinux()
 	# select the home folder
 	username=$1
 	echo "=== copy the file into the home directory"
-	mv /autoInstaller-AW /home/$username/autoInstaller-AW
+	mv /autoInstaller-ArchWater /home/$username/autoInstaller-ArchWater
 	echo "=== cd into the home directory with the user"
-	cd /home/$username/autoInstaller-AW
+	cd /home/$username/autoInstaller-ArchWater
 	echo "=== run the ArchWaterInstallation.sh"
-	sh /home/$username/autoInstaller-AW/ArchWaterInstallation.sh $username $password $rootPassword
+	sh /home/$username/autoInstaller-ArchWater/ArchWaterInstallation.sh $username $password $rootPassword
 }
 
 

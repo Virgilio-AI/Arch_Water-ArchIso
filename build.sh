@@ -76,8 +76,8 @@ gitClone()
 {
 	local -n lrepos=$1
 	echo $lrepos
-	mkdir $archisoRoot/airootfs/root/autoInstaller-AW/repos
-	cd $archisoRoot/airootfs/root/autoInstaller-AW/repos
+	mkdir $archisoRoot/airootfs/root/autoInstaller-ArchWater/repos
+	cd $archisoRoot/airootfs/root/autoInstaller-ArchWater/repos
 	for (( i=0; i<= ${#repos[@]} ; i+=1 ))
 	do
 		git clone ${repos[i]}
@@ -170,7 +170,7 @@ then
 	toDelete=$archisoRoot/airootfs/root/dotFiles
 	echo "about to delete $toDelete"
 	rm -rfd $toDelete
-	cd $archisoRoot/airootfs/root/autoInstaller-AW
+	cd $archisoRoot/airootfs/root/autoInstaller-ArchWater
 	git clone https://github.com/Virgilio-AI/dotFiles-AW.git dotFiles
 fi
 

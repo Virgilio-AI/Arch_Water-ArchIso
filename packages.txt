@@ -213,3 +213,5 @@ python-adblock
 ncmpcpp
 pulseaudio
 pavucontrol
+ntp
+pamixer
