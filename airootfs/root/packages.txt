@@ -146,7 +146,6 @@ picom
 pkgconf
 ppp
 pptpclient
-pulseaudio-bluetooth
 pulsemixer
 pv
 python-adblock
@@ -301,8 +300,8 @@ vim
 python-adblock
 qutebrowser
 ncmpcpp
-pulseaudio
 pavucontrol
 feh
 ntp
 pamixer
+pulseaudio

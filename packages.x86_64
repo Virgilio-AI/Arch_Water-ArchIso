@@ -186,7 +186,7 @@ st
 dwmblocks
 brave-bin
 dmenu
-paru
+paru-bin
 git
 ttf-font
 dialog
@@ -217,8 +217,8 @@ vim
 python-adblock
 ncmpcpp
 mpd
-pulseaudio
 pavucontrol
 feh
 ntp
 pamixer
+pulseaudio
