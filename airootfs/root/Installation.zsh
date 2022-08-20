@@ -166,12 +166,17 @@ reset ;
 InternetConnection |& tee -a Log.txt
 
 seePartitions=$(lsblk)
+echo "$seePartitions" > partitionTmpFile.txt
+sed -Ei ':a;N;$!ba;s/\r{0,1}\n/\\n/g' partitionTmpFile.txt
+seePartitions=$(cat partitionTmpFile.txt)
+
 diskPartition=$(dialog --title "partitioning the disks" --inputbox "$seePartitions\nenter the partition in with you want to install the partition" 30 80 "/dev/sda" 3>&1 1>&2 2>&3)
 
 
-dialog --title "Installation" --yesno "is this system UEFI? must new computers use UEFI" 17 70
-if [[ $? == 0 ]]
-then
+# check if the installation is efi or uefi
+
+efiFolder="/sys/firmware/efi"
+if [ -d "$efiFolder" ]; then
 	uefi="yes"
 	reset ;
 	partitionUEFI $diskPartition |& tee -a Log.txt
@@ -180,6 +185,8 @@ else
 	reset ;
 	partition $diskPartition |& tee -a Log.txt 
 fi
+
+
 
 while [ $rootPassword != $rootConfirm ]
 do
@@ -208,9 +215,10 @@ done
 dialog --title "Installation" --yesno "do you want to have the lightweight installation?" 17 70
 if [[ $? == 0 ]]
 then
-	cd ~/dotFiles
-	git checkout lightweight
-	cd ~
+	tmpPrev=$(pwd)
+	cd ~/autoInstaller-ArchWater/dotFiles
+	git checkout lightWeight
+	cd $tmpPrev
 fi
 
 
