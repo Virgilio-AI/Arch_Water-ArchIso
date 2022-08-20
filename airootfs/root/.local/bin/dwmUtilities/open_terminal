@@ -1,0 +1,2 @@
+#!/bin/zsh
+st -e sh -c "nvim -c 'terminal'"
