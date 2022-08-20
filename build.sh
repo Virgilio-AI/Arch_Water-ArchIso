@@ -161,17 +161,18 @@ then
 	repo_add dwmblocks
 	repo_add dmenu
 	repo_add st
-
-
 	repos=("https://github.com/Virgilio-AI/Arch_Water-dmenu.git" "https://github.com/Virgilio-AI/Arch_water-dwm-window_manager.git" "https://github.com/Virgilio-AI/Arch_Water-dwmblocks-status_monitor.git" "https://github.com/Virgilio-AI/Arch_Water-st_terminal.git")
-
 	# gitClone repos
-
 	toDelete=$archisoRoot/airootfs/root/dotFiles
 	echo "about to delete $toDelete"
 	rm -rfd $toDelete
 	cd $archisoRoot/airootfs/root/autoInstaller-ArchWater
 	git clone https://github.com/Virgilio-AI/dotFiles-AW.git dotFiles
+
+#	cd $archisoRoot/airootfs/root/autoInstaller-ArchWater/dotFiles
+#	git checkout lightWeight
+#	cd $archisoRoot/airootfs/root/autoInstaller-ArchWater
+
 fi
 
 cd $archisoRoot

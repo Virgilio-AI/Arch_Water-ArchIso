@@ -197,7 +197,6 @@ nvidia
 mesa-libgl
 xf86-video-nouveau
 opencl-nvidia
-vim-plug
 autoconf
 automake
 binutils
@@ -222,3 +221,11 @@ feh
 ntp
 pamixer
 pulseaudio
+openssl
+dbus
+sqlite
+rust
+expect
+unbuffer
+net-tools
+zenity

@@ -215,3 +215,11 @@ pavucontrol
 ntp
 pamixer
 pulseaudio
+openssl
+dbus
+sqlite
+rust
+expect
+unbuffer
+net-tools
+zenity

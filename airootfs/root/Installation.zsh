@@ -198,14 +198,20 @@ read username
 
 while [ $passconfirm != $password ]
 do
-
 echo "Enter the password for the user"
 read password
 echo "confirm password"
 read passconfirm
-
 done
 
+
+dialog --title "Installation" --yesno "do you want to have the lightweight installation?" 17 70
+if [[ $? == 0 ]]
+then
+	cd ~/dotFiles
+	git checkout lightweight
+	cd ~
+fi
 
 
 
@@ -241,3 +247,7 @@ arch-chroot /mnt zsh InstallationChroot.zsh $username $uefi $diskPartition $pass
 
 # dialog --title "Installation" --infobox "the installation has ended\nshutdown and remove the usb" 10 60
 echo "===== the installation has finished" |& tee -a Log.txt
+
+
+
+

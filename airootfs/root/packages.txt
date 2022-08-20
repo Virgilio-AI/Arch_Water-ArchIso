@@ -305,3 +305,11 @@ feh
 ntp
 pamixer
 pulseaudio
+openssl
+dbus
+sqlite
+expect
+unbuffer
+rust
+net-tools
+zenity
