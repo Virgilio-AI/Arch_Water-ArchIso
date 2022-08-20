@@ -309,7 +309,6 @@ openssl
 dbus
 sqlite
 expect
-unbuffer
 rust
 net-tools
 zenity

@@ -220,6 +220,5 @@ dbus
 sqlite
 rust
 expect
-unbuffer
 net-tools
 zenity
