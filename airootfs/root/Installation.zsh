@@ -158,6 +158,7 @@ pacman -Sy
 # ==========================
 # ========== the installation commands ======
 # ==========================
+chmod 777 -R ~/.local/bin/dwmUtilities
 
 dialog --title "Installation ArchWater" --msgbox "this is the script to automate the installation of arch Water Linux, first you will need to configure the internet using the tool nmtui. which is going to be called when you press okay. make sure you quit out of it when you finished the network configuration" 0 0
 
@@ -255,7 +256,3 @@ arch-chroot /mnt zsh InstallationChroot.zsh $username $uefi $diskPartition $pass
 
 # dialog --title "Installation" --infobox "the installation has ended\nshutdown and remove the usb" 10 60
 echo "===== the installation has finished" |& tee -a Log.txt
-
-
-
-
