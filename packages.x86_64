@@ -230,3 +230,4 @@ net-tools
 zenity
 nodejs
 cmake
+xdotool
