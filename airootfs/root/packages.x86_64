@@ -228,3 +228,5 @@ rust
 expect
 net-tools
 zenity
+nodejs
+cmake
