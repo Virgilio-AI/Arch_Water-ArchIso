@@ -218,7 +218,7 @@ if [[ $? == 0 ]]
 then
 	tmpPrev=$(pwd)
 	cd ~/autoInstaller-ArchWater/dotFiles
-	git checkout lightWeight
+	git checkout -f  lightWeight
 	cd $tmpPrev
 fi
 
