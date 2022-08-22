@@ -232,11 +232,11 @@ pacstrap /mnt $(cat packages.x86_64) |& tee -a Log.txt
 if [[ $uefi -eq "yes" ]]
 then
 	echo "========== creating the fstab file"  |& tee -a Log.txt
-	genfstab -U /mnt >> /mnt/etc/fstab  |& tee -a Log.txt
+	genfstab -U /mnt > /mnt/etc/fstab  |& tee -a Log.txt
 	cat /mnt/etc/fstab  |& tee -a Log.txt
 else
 	echo "========== generating the fstab configuration" |& tee -a Log.txt
-	genfstab -U /mnt >> /mnt/etc/fstab |& tee -a Log.txt ;
+	genfstab -U /mnt > /mnt/etc/fstab |& tee -a Log.txt ;
 	cat /mnt/etc/fstab |& tee -a Log.txt
 fi
 

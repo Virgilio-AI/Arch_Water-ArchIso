@@ -226,4 +226,3 @@ nodejs
 cmake
 xdotool
 python-termcolor
-python-pip
