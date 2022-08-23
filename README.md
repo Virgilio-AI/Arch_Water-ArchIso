@@ -1,6 +1,6 @@
 ## this is the script to create the arch water ISO
 this uses archiso and is fully configurable just like archiso
-
+this is  a fork of the official arch linux arch iso but it includes water linux installer with all necessary packages, this is an offline installer so it means that once you have the iso you can burn in to a usb and boot into it from a laptop and you can install water linux entirely offline :)
 ## compile
 to compile you can just run 
 
@@ -20,9 +20,22 @@ sudo sh build.sh
  ```
  sudo sh run.sh out/archWaterLinux-2021.08.17-x86_64.iso
  ```
+ 
+ ## clean all the working files
+ ```
+ ./celanForCommit.sh
+ ```
 
 
 # Notes
-if you want a specific package to be in the iso, just add it into packages.x86_64
+if you want a specific package to be in the iso, just add it these 4 files
+
+packages.txt
+packages.x86_64
+airootfs/root.packages.txt
+airootfs/root/packages.x86_64
+
+
+
 file
 - suggestions are accepted
