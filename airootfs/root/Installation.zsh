@@ -15,7 +15,6 @@ partitionUEFI(){
 	echo "===== the disk partition is $diskPartition"
 	diskPartition=$1
 	echo "===== the disk partition is $diskPartition"
-
 	(
 	echo d # delete all the partitions
 	echo   # default
@@ -49,25 +48,33 @@ partitionUEFI(){
 	echo y # delete the default format
 	echo w # save and quit
 	) | sudo fdisk $diskPartition
-
+	# get the last character of the partition
+	lch=${diskPartition: -1}
+	# get the name depending on the last character
+	if [[ $lch =~ ^[0-9]+$ ]]; then
+		p1=${diskPartition}p1
+		p2=${diskPartition}p2
+	else
+		p1=${diskPartition}1
+		p2=${diskPartition}2
+	fi
 	# format the EFI partition
 	# dialog --title "Installation -- creating the partitions UEFI" --infobox "formating the EFI partition" 10 60
 	echo "==========formatting the partitions UEFI"
-	mkfs.fat -F32 ${diskPartition}1
+	mkfs.fat -F32 $p1
 	# mkswap in the swap partition
 	# dialog --title "Installation -- creating the partitions UEFI" --infobox "making the swap partition" 10 60
 	echo "==========making the swap partition"
-	mkfs.ext4 ${diskPartition}2
-
+	mkfs.ext4 $p2
 	# first mount the root partition
 	# dialog --title "Installation -- creating the partitions UEFI" --infobox "mounting the main partition" 10 60
 	echo "==========mounting the main partition"
-	mount ${diskPartition}2 /mnt
-
+	mount $p2 /mnt
 	# mount the efi partition
 	mkdir -p /mnt/boot/efi
-	mount ${diskPartition}1 /mnt/boot/efi
+	mount $p1 /mnt/boot/efi
 }
+
 partition()
 {
 	# dialog --title "Installation -- creating the partitions" --infobox "the disk will be partitioned and formated" 10 60
@@ -110,19 +117,31 @@ partition()
 	echo w # save and quit
 	) | sudo fdisk $diskPartition 
 
+
+	# get the last character of the partition
+	lch=${diskPartition: -1}
+	# get the name depending on the last character
+	if [[ $lch =~ ^[0-9]+$ ]]; then
+		p1=${diskPartition}p1
+		p2=${diskPartition}p2
+	else
+		p1=${diskPartition}1
+		p2=${diskPartition}2
+	fi
+
 	# format the root partition
 	echo "===== formatting the disk"  
-	echo "y" | mkfs.ext4 ${diskPartition}2  
+	echo "y" | mkfs.ext4 $p2  
 
 	# format the boot partition
-	echo "y" | mkfs.ext4 ${diskPartition}1
+	echo "y" | mkfs.ext4 $p1
 
 	echo "===== mounting the main partition"  
-	mount ${diskPartition}2 /mnt  
+	mount $p2 /mnt  
 
 	mkdir /mnt/boot
 	echo " ===== mounting the boot partition"
-	mount ${diskPartition}1 /mnt/boot 
+	mount $p1 /mnt/boot 
 }
 
 
