@@ -11,10 +11,6 @@ installpkg(){ pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
 
 error() { echo "ERROR: $1" ; exit 1;}
 
-
-
-
-
 adduserandpass() { \
 	# Adds user `$name` with password $pass1.
 	dialog --infobox "Adding user \"$name\"..." 4 50
@@ -23,31 +19,18 @@ adduserandpass() { \
 	repodir="/home/$name/.local/src"; mkdir -p "$repodir"; chown -R "$name":wheel "$(dirname "$repodir")"
 	echo "$name:$pass1" | chpasswd
 	unset pass1 pass2 ;}
-
 refreshkeys() { \
 	dialog --infobox "Refreshing Arch Keyring..." 4 40
 	pacman -Q artix-keyring >/dev/null 2>&1 && pacman --noconfirm -S artix-keyring artix-archlinux-support >/dev/null 2>&1
 	pacman --noconfirm -S archlinux-keyring >/dev/null 2>&1
 	}
-
 newperms() { # Set special sudoers settings for install (or after).
 	sed -i "/#LARBS/d" /etc/sudoers
 	echo "$* #LARBS" >> /etc/sudoers ;}
-
-
 maininstall() { # Installs all needed programs from main repo.
 	dialog --title "ArchWater Installation" --infobox "Installing \`$1\` ($n of $total). $1 $2" 5 70
 	installpkg "$1"
 	}
-
-
-
-
-
-
-
-
-
 putgitrepo() { # Downloads a gitrepo $1 and places the files in $2 only overwriting conflicts
 	local user=$1
 	repoPath=/home/$user/autoInstaller-ArchWater/dotFiles/
@@ -57,15 +40,10 @@ putgitrepo() { # Downloads a gitrepo $1 and places the files in $2 only overwrit
 
 	sudo rsync -aAXv "$repoPath" "$userHome"
 	}
-
-
 finalize(){ \
 	dialog --infobox "Preparing welcome message..." 4 50
 	dialog --title "All done!" --msgbox "Congrats! Provided there were no hidden errors, the script completed successfully and all the programs and configuration files should be in place.\\n\\nTo run the new graphical environment, log out and log back in as your new user, then run the command \"startx\" to start the graphical environment (it will start automatically in tty1).\\n\\n.t Luke" 12 80
 	}
-
-
-
 changePermission()
 {
 	local user=$1
@@ -78,7 +56,6 @@ changePermission()
 	sudo chgrp wheel /home/$user
 
 }
-
 writeToFile()
 {
 	echo "picom &"
@@ -87,22 +64,24 @@ writeToFile()
 	echo "dwmblocks &"
 	echo "mpd &"
 	echo "exec dwm"
-
 }
-
-
 waterLinuxConfig()
 {
-
-
 # copy the os release file
 cp os-release /etc/os-release
 # change the Arch LInux name in grub
 sed -i "s/Arch Linux/Water Linux/" /boot/grub/grub.cfg
 sed -i "s/Arch Linux/Water Linux/"  /boot/syslinux/syslinux.cfg
-
 sed -i "s/# MENU BACKGROUND/MENU BACKGROUND/" /boot/syslinux/syslinux.cfg
+}
 
+install_python_packages()
+{
+	pythonPackages=$userHome/autoInstaller-ArchWater/pythonPackages
+	cd pythonPackages
+
+
+	pip install --no-index --find-links $pythonPackages/ -r requirements.txt
 }
 
 
