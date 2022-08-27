@@ -185,12 +185,19 @@ dialog --title "Installation ArchWater" --msgbox "this is the script to automate
 reset ;
 InternetConnection |& tee -a Log.txt
 
+
+
+
+# input the correct partition
 seePartitions=$(lsblk)
 echo "$seePartitions" > partitionTmpFile.txt
 sed -Ei ':a;N;$!ba;s/\r{0,1}\n/\\n/g' partitionTmpFile.txt
 seePartitions=$(cat partitionTmpFile.txt)
 
 diskPartition=$(dialog --title "partitioning the disks" --inputbox "$seePartitions\nenter the partition in with you want to install the partition" 30 80 "/dev/sda" 3>&1 1>&2 2>&3)
+
+
+
 
 
 # check if the installation is efi or uefi
@@ -232,14 +239,62 @@ read passconfirm
 done
 
 
-dialog --title "Installation" --yesno "do you want to have the lightweight installation?" 17 70
-if [[ $? == 0 ]]
+
+
+# if connection to the internet ask if they want to use a personal repo
+
+
+case "$(cat /sys/class/net/w*/operstate 2>/dev/null)" in
+	down) internet="down" ;;
+	up) internet="down" ;;
+esac
+
+
+
+# if else the internet is down
+if [[ internet == "down" ]]
 then
-	tmpPrev=$(pwd)
-	cd ~/autoInstaller-ArchWater/dotFiles
-	git checkout -f  lightWeight
-	cd $tmpPrev
+	# you have two options, the lightWeight. the master
+	dialog --title "Installation" --yesno "do you want to have the lightweight installation?" 17 70
+	if [[ $? == 0 ]]
+	then
+		tmpPrev=$(pwd)
+		cd ~/autoInstaller-ArchWater/dotFiles
+		git checkout -f  lightWeight
+		cd $tmpPrev
+	fi
+else
+
+	# you have three options: lightWeight,master,personal_repo
+	dialog --title "Installation" --yesno "you are connected to the internet, do you want to use a custom repo?" 17 70
+	if [[ $? == 0 ]]
+	then
+		# personal repo choosen
+		#
+		# remove the default dotFiles
+		rm -rfd ~/autoInstaller-ArchWater/dotFiles
+		tmpPrev=$(pwd)
+		cd ~/autoInstaller-ArchWater
+		personal_repo=$(dialog --title "partitioning the disks" --inputbox "$seePartitions\nenter the partition in with you want to install the partition" 30 80 "https://github.com/Virgilio-AI/personal_dotfiles" 3>&1 1>&2 2>&3)
+		git clone $personal_repo dotFiles
+		cd $tmpPrev
+	else
+		# use one of the default water linux installations
+
+	# you have two options, the lightWeight. the master
+	dialog --title "Installation" --yesno "do you want to have the lightweight installation?" 17 70
+	if [[ $? == 0 ]]
+	then
+		tmpPrev=$(pwd)
+		cd ~/autoInstaller-ArchWater/dotFiles
+		git checkout -f  lightWeight
+		cd $tmpPrev
+	fi
+
+	fi
 fi
+
+
 
 
 
