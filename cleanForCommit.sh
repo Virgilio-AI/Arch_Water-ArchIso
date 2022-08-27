@@ -74,7 +74,14 @@ rm_AUR_packages()
 		pkg=${packages[i]}
 		rm_AUR_package $pkg
 	done
-
+}
+rm_python_packages()
+{
+	toDelete=$rootArchiso/airootfs/root/autoInstaller-ArchWater/pythonPackages
+	cd $toDelete
+	echo "about to delete: $(pwd)"
+	read -n1 &&
+	rm -vrfd !("requirements.txt")
 }
 
 
@@ -86,6 +93,8 @@ rm_AUR_packages()
 
 rm_personal_packages personal_packages
 rm_AUR_packages AUR_packages
+rm_python_packages
+
 echo "about to delete ${folders[@]}" &&
 	read -n1 && 
 sudo rm -rfdv ${folders[@]}
