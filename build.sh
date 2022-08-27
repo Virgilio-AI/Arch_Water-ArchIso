@@ -26,6 +26,22 @@ sudo echo "enabled sudo privileges"
 
 
 
+rm_python_packages()
+{
+	toDelete=$rootArchiso/airootfs/root/autoInstaller-ArchWater/pythonPackages
+	cd $toDelete
+	echo "about to delete: $(pwd)"
+	read -n1 &&
+	rm -vrfd !("requirements.txt")
+}
+
+download_python_packages()
+{
+
+	downloadFolder=$rootArchiso/airootfs/root/autoInstaller-ArchWater/pythonPackages
+	cd $downloadFolder
+	pip download -r requirements.txt
+}
 loadAUR()
 {
 	package=$1
@@ -120,8 +136,17 @@ then
 	echo "y" | loadCustom dwmblocks
 	echo "y" | loadCustom dmenu
 	echo "y" | loadCustom st
+
+	# remove downloaded python packages
+	rm_python_packages
+	# download python packages
+	download_python_packages
+
+
 	cd $archisoRoot/PKGBUILDS
 fi
+
+
 
 if [[ $update == "y" ]]
 then
@@ -145,6 +170,7 @@ then
 	# agregamos los paquetes de la lista de pacman
 	mkdir -p $archisoRoot/airootfs/root/blankdb
 	sudo pacman -Sywv --cachedir $archisoRoot/airootfs/root/custom --dbpath $archisoRoot/airootfs/root/blankdb $(cat $archisoRoot/packages.txt)
+
 
 	repo-add $archisoRoot/airootfs/root/custom/CustomRepo.db.tar.gz $archisoRoot/airootfs/root/custom/*.zst
 	repo-add $archisoRoot/airootfs/root/custom/CustomRepo.db.tar.gz $archisoRoot/airootfs/root/custom/*.xz
