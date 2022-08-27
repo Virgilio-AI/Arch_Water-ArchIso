@@ -232,3 +232,8 @@ nodejs
 cmake
 xdotool
 python-termcolor
+npm
+gtk2
+python-pip
+jupyter-notebook
+pass
