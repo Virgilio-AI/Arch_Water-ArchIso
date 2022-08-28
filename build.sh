@@ -28,7 +28,7 @@ sudo echo "enabled sudo privileges"
 
 rm_python_packages()
 {
-	toDelete=$rootArchiso/airootfs/root/autoInstaller-ArchWater/pythonPackages
+	toDelete=$archisoRoot/airootfs/root/autoInstaller-ArchWater/pythonPackages
 	cd $toDelete
 	echo "about to delete: $(pwd)"
 	read -n1 &&
@@ -38,7 +38,7 @@ rm_python_packages()
 download_python_packages()
 {
 
-	downloadFolder=$rootArchiso/airootfs/root/autoInstaller-ArchWater/pythonPackages
+	downloadFolder=$archisoRoot/airootfs/root/autoInstaller-ArchWater/pythonPackages
 	cd $downloadFolder
 	pip download -r requirements.txt
 }
