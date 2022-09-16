@@ -108,8 +108,6 @@ parse_git_branch() {
     fi
 }
 
-setopt PROMPT_SUBST
-set -o GLOB_SUBST
 
 # neofetch --gtk-shorthand off --gtk2 off --gtk3 off --color_blocks off
  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -119,7 +117,32 @@ export EDITOR=nvim
 export VISUAL=nvim
 export SUDO_EDITOR
 export MANPAGER='nvim +Man!'
-PROMPT='%B%{%F{57}%}%~%{%F{11}%}$(parse_git_branch)%f%b '
+
+
+
+# ==========================
+# ========== Prompt Configuration ======
+# ==========================
+# Load promptinit
+autoload -Uz promptinit && promptinit
+
+# Define the theme
+prompt_mytheme_setup() {
+	repoName=$(basename -s .git `git config --get remote.origin.url`)
+	precmd() {
+		print -rP "%B%{%F{57}%}%~%{%F{11}%}$(parse_git_branch) -- $repoName %b"
+	}
+	PS1='%B%{%F{1}%}-->$ %f%b'
+}
+
+# Add the theme to promptsys
+prompt_themes+=( mytheme )
+
+# Load the theme
+prompt mytheme
+
+# =========================
+
 
 
 

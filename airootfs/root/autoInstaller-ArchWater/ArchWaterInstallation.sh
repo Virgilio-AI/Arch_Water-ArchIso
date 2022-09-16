@@ -186,8 +186,6 @@ dialog --title "zsh configuration" --yesno "do you want to overwrite the zsh con
 if [[ $? == 0 ]]
 then
 	cd /home/$username/autoInstaller-ArchWater
-	mkdir -p /home/$username/.config/zsh
-	rsync -aAXv --delete zdotdir/ /home/$username/.config/zsh/ |& tee -a Log.txt
 	rsync -aAXv --delete etcZdotdir/ /etc/zsh/ |& tee -a Log.txt
 fi
 
