@@ -55,12 +55,12 @@ InstallArchLinux()
 
 	(
 		echo "$password"
-	) | chsh -s /bin/zsh "$username" |& tee -a Log.txt
+	) | chsh -s /usr/bin/xonsh "$username" |& tee -a Log.txt
 
 
 	(
 		echo "$password"
-	) | chsh -s /bin/zsh |& tee -a Log.txt
+	) | chsh -s /usr/bin/xonsh |& tee -a Log.txt
 
 }
 

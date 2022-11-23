@@ -61,8 +61,6 @@ gptfdisk
 grml-zsh-config
 hdparm
 intel-ucode
-ipw2100-fw
-ipw2200-fw
 irssi
 jfsutils
 kitty-terminfo
@@ -180,7 +178,6 @@ networkmanager
 zsh-completions
 zsh-syntax-highlighting
 ttf-nerd-fonts-symbols
-libxft-bgra
 dwm
 st
 dwmblocks
@@ -237,3 +234,5 @@ gtk2
 python-pip
 jupyter-notebook
 pass
+xonsh
+libxft

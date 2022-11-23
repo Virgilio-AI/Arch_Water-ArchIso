@@ -69,8 +69,6 @@ gutenprint
 gzip
 hdparm
 intel-ucode
-ipw2100-fw
-ipw2200-fw
 irssi
 iw
 iwd
@@ -180,9 +178,6 @@ texinfo
 tmux
 tpm2-tss
 tree
-ttf-font-awesome
-ttf-joypixels
-ttf-nerd-fonts-symbols
 udftools
 ueberzug
 unzip
@@ -321,3 +316,6 @@ gtk2
 python-pip
 jupyter-notebook
 pass
+gnu-free-fonts
+xonsh
+libxft

@@ -1,4 +1,3 @@
 brave-bin
 vim-plug
-paru
-libxft-bgra
+paru-bin

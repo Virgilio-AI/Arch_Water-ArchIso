@@ -205,7 +205,7 @@ git update-index --assume-unchanged "/home/$name/README.md" "/home/$name/LICENSE
 
 
 # Make zsh the default shell for the user.
-chsh -s /bin/zsh "$name" >/dev/null 2>&1
+chsh -s /usr/bin/xonsh "$name" >/dev/null 2>&1
 sudo -u "$name" mkdir -p "/home/$name/.cache/zsh/"
 
 # # dbus UUID must be generated for Artix runit.

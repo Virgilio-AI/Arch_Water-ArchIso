@@ -125,9 +125,7 @@ then
 
 	# AUR packages
 	loadAUR brave-bin &&
-	loadAUR libxft-bgra &&
 	loadAUR paru-bin &&
-	loadAUR ttf-nerd-fonts-symbols &
 	loadAUR vim-plug &
 
 
@@ -177,9 +175,7 @@ then
 
 
 	repo_add brave-bin
-	repo_add libxft-bgra
 	repo_add paru-bin
-	repo_add ttf-nerd-fonts-symbols
 	repo_add vim-plug
 
 	# personalized packages
